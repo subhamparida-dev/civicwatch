@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Report Civic Issue</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #4e73df, #1cc88a);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .card {
+            background: white;
+            width: 95%;
+            max-width: 650px;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 18px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: #4e73df;
+            box-shadow: 0 0 5px rgba(78,115,223,0.5);
+            outline: none;
+        }
+
+        textarea {
+            resize: none;
+            height: 100px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background: linear-gradient(135deg, #4e73df, #1cc88a);
+            color: white;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .top-link {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .top-link a {
+            text-decoration: none;
+            color: #4e73df;
+            font-size: 14px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media(max-width: 500px) {
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h2>🚨 Report Civic Issue</h2>
+
+    <div class="top-link">
+        <a href="/issues/">View All Issues</a>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Issue Title</label>
+        <input type="text" name="title" placeholder="Enter issue title" required>
+
+        <label>Description</label>
+        <textarea name="description" placeholder="Describe the issue in detail" required></textarea>
+
+        <label>Category</label>
+        <select name="category" required>
+            <option value="">Select Category</option>
+            <option value="road">Road Issues</option>
+            <option value="water">Water Issues</option>
+            <option value="electricity">Electricity Issues</option>
+            <option value="sanitation">Sanitation Issues</option>
+            <option value="public_safety">Public Safety</option>
+            <option value="other">Other</option>
+        </select>
+
+        <label>Area</label>
+        <select name="area" required>
+            <option value="">Select Area</option>
+            {% for area in areas %}
+                <option value="{{ area.id }}">{{ area.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Severity Level</label>
+        <select name="severity" required>
+            <option value="1">1 - Low</option>
+            <option value="2">2 - Moderate</option>
+            <option value="3">3 - Serious</option>
+            <option value="4">4 - High</option>
+            <option value="5">5 - Critical</option>
+        </select>
+
+        <label>Assign Department</label>
+        <select name="department" required>
+            <option value="">Select Department</option>
+            {% for dept in departments %}
+                <option value="{{ dept.id }}">{{ dept.name }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Submit Issue</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CivicWatch Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #4e73df, #1cc88a);
+            padding: 30px;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .top-links {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: white;
+            background: linear-gradient(135deg, #4e73df, #1cc88a);
+            margin: 5px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* STAT CARDS */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: #f8f9fc;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .card h3 {
+            margin: 0;
+            font-size: 30px;
+            color: #4e73df;
+        }
+
+        .card p {
+            margin: 5px 0 0;
+            font-size: 14px;
+        }
+
+        .section {
+            margin-top: 30px;
+        }
+
+        .bar-container {
+            margin-bottom: 15px;
+        }
+
+        .bar-label {
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .bar {
+            background: #eee;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            background: linear-gradient(135deg, #4e73df, #1cc88a);
+            padding: 6px;
+            color: white;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        @media(max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>📊 CivicWatch Analytics Dashboard</h2>
+
+    <div class="top-links">
+        <a href="/" class="btn">Home</a>
+        <a href="/issues/" class="btn">View Issues</a>
+        <a href="/report/" class="btn">Report Issue</a>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div class="cards">
+        <div class="card">
+            <h3>{{ total_issues }}</h3>
+            <p>Total Issues</p>
+        </div>
+
+        <div class="card">
+            <h3>{{ open_issues }}</h3>
+            <p>Open Issues</p>
+        </div>
+
+        <div class="card">
+            <h3>{{ resolved_issues }}</h3>
+            <p>Resolved Issues</p>
+        </div>
+
+        <div class="card">
+            <h3>{{ high_priority }}</h3>
+            <p>High Priority (Score ≥ 15)</p>
+        </div>
+    </div>
+
+    <!-- AREA STATS -->
+    <div class="section">
+        <h3>🏙 Area-wise Issues</h3>
+
+        {% for area in area_stats %}
+            <div class="bar-container">
+                <div class="bar-label">
+                    {{ area.name }} ({{ area.issue_count }})
+                </div>
+                <div class="bar">
+                    <div class="bar-fill" style="width: {{ area.issue_count|add:1 }}0%;">
+                        {{ area.issue_count }} issues
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>No area data available.</p>
+        {% endfor %}
+    </div>
+
+    <!-- DEPARTMENT STATS -->
+    <div class="section">
+        <h3>🏢 Department-wise Issues</h3>
+
+        {% for dept in department_stats %}
+            <div class="bar-container">
+                <div class="bar-label">
+                    {{ dept.name }} ({{ dept.issue_count }})
+                </div>
+                <div class="bar">
+                    <div class="bar-fill" style="width: {{ dept.issue_count|add:1 }}0%;">
+                        {{ dept.issue_count }} issues
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>No department data available.</p>
+        {% endfor %}
+    </div>
+
+</div>
+
+</body>
+</html>
